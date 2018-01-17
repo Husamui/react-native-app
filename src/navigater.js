@@ -47,7 +47,7 @@ const AuthNavigator = StackNavigator({
 
 class AppNavigation extends Component {
     state = {
-        isloggedin: false
+        isloggedin: true
     }
     render() {
         if(!this.state.isloggedin) {

@@ -9,6 +9,23 @@ import profileScreen from './screens/profileScreen';
 // Auth Screens
 import signupScreen from './screens/auth/signupScreen';
 
+// GraphQL 
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+
+
+
+
+const AUTHENTICAT_QUERY = gql`
+    {
+        authenticat @client
+    }
+`;
+// const VISIBILITY_QUERY = gql`
+//   {
+//     visibilityFilter @client
+//   }
+// `;
 
 const RootTabs = TabNavigator({
     home: {
@@ -37,7 +54,6 @@ const RootNavigator = StackNavigator({
     }
 });
 
-
 const AuthNavigator = StackNavigator({
     signup: {
         screen: signupScreen
@@ -46,11 +62,8 @@ const AuthNavigator = StackNavigator({
 
 
 class AppNavigation extends Component {
-    state = {
-        isloggedin: true
-    }
     render() {
-        if(!this.state.isloggedin) {
+        if(!this.props.data.authenticat) {
             return <AuthNavigator />
         }
         return (
@@ -59,4 +72,4 @@ class AppNavigation extends Component {
     }
 }
 
-export default AppNavigation;
+export default graphql(AUTHENTICAT_QUERY)(AppNavigation);

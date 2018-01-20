@@ -38,12 +38,17 @@ class HomeScreen extends Component {
     }
   };
 
+  newTweet(){
+    this.props.navigation.navigate('NewTweet');
+  }
+
   render() {
     console.log('the render props are: ', this.props)
     return (
       <View>
         <Button title='hello' onPress={this._onSignupPress.bind(this)}>
         </Button>
+        <Button title='New Tweet' onPress={this.newTweet.bind(this)}></Button>
         <Text> Home Screen </Text>
       </View>
     );

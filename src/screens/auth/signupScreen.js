@@ -4,12 +4,7 @@ import { View, Text, Button } from 'react-native';
 // GraphQL 
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-
-const AUTHENTICAT = gql`
-  mutation authenticat($authenticat: Boolean) {
-    authenticat(authenticat: $authenticat) @client
-  }
-`;
+import { AUTHENTICAT } from '../../graphql/mutations/user'
 
 class SignupScreen extends Component {
   state = {

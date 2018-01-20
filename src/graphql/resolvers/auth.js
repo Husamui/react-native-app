@@ -1,4 +1,7 @@
 import gql from 'graphql-tag';
+import { AsyncStorage } from 'react-native';
+
+const AUTH_TOKEN = 'AUTH_TOKEN';
 
 const authenticat = {
   defaults: {
@@ -6,8 +9,13 @@ const authenticat = {
   },
   resolvers: {
     Mutation: {
-      authenticat: (_, {authenticat}, { cache }) => {
-        cache.writeData({ data: {authenticat} });
+      authenticat: (_, args, { cache }) => {
+        cache.writeData({data: {authenticat: true}});
+        return null;
+      },
+      logout: async (_, args, { cache }) => {
+        await AsyncStorage.removeItem(AUTH_TOKEN);
+        cache.writeData({data: {authenticat: false}});
         return null;
       }
     },

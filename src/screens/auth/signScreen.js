@@ -4,11 +4,10 @@ import styled from 'styled-components/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import Touchable from '@appandflow/touchable';
 
-
 // GraphQL 
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-import { AUTHENTICAT, SIGNUP } from '../../graphql/mutations/user'
+import { AUTHENTICAT, LOGIN } from '../../graphql/mutations/user'
 import { signIn } from '../../utils/auth';
 
 // import SIGNUP_MUTATION from '../graphql/mutations/signup';
@@ -18,13 +17,11 @@ import Loading from '../../components/Loading';
 
 import { NavigationActions } from 'react-navigation'
 
-class SignupScreen extends Component {
+class SigninScreen extends Component {
 
   state = {
-    fullName: '',
     email: '',
     password: '',
-    username: '',
     loading: false,
   };
 
@@ -40,31 +37,29 @@ class SignupScreen extends Component {
   _checkIfDisabled() {
     const { fullname, email, password, username } = this.state;
 
-    if (!fullname || !email || !password || !username) {
+    if ( !email || !password ) {
       return true;
     }
-
     return false;
   }
 
-  _onSignupPress = async () => {
+  _onSigninPress = async () => {
     this.setState({ loading: true });
 
-    const { fullname, email, password, username } = this.state;
-    const avatar = fakeAvatar;
+    const { email, password } = this.state;
 
     try {
-      const { data } = await this.props.signup({
+      const { data } = await this.props.login({
         variables: {
-          fullname,
           email,
-          password,
-          username,
-          avatar,
+          password
         },
       });
-      await signIn(data.signup.token);
-      this.props.authenticat()
+      console.log('data back', data);
+      if(!data.login.error){
+        await signIn(data.login.token);
+        this.props.authenticat()
+      }
     } catch (error) {
       throw error;
     }
@@ -82,13 +77,6 @@ class SignupScreen extends Component {
         <Wrapper>
           <InputWrapper>
             <Input
-              placeholder="Full Name"
-              autoCapitalize="words"
-              onChangeText={text => this._onChangeText(text, 'fullname')}
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <Input
               placeholder="Email"
               autoCapitalize="none"
               keyboardType="email-address"
@@ -102,19 +90,12 @@ class SignupScreen extends Component {
               onChangeText={text => this._onChangeText(text, 'password')}
             />
           </InputWrapper>
-          <InputWrapper>
-            <Input
-              placeholder="Username"
-              autoCapitalize="none"
-              onChangeText={text => this._onChangeText(text, 'username')}
-            />
-          </InputWrapper>
         </Wrapper>
         <ButtonConfirm
-          onPress={this._onSignupPress.bind(this)}
+          onPress={this._onSigninPress.bind(this)}
           disabled={this._checkIfDisabled()}
         >
-          <ButtonConfirmText>Sign Up</ButtonConfirmText>
+          <ButtonConfirmText>Sign In</ButtonConfirmText>
         </ButtonConfirm>
       </Root>
     );
@@ -122,13 +103,13 @@ class SignupScreen extends Component {
 }
 
 export default compose(
-  graphql(SIGNUP,{
-    name: 'signup'
+  graphql(LOGIN,{
+    name: 'login'
   }),
   graphql(AUTHENTICAT,{
     name: 'authenticat'
   })
-)(SignupScreen);
+)(SigninScreen);
 
 
 const Root = styled(Touchable).attrs({

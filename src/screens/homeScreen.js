@@ -3,7 +3,7 @@ import { View, Text, Button } from 'react-native';
 
 import { graphql } from 'react-apollo';
 import  getTweets  from '../graphql/queries/getTweets';
-import  signup  from '../graphql/mutations/signup';
+import  { LOGOUT }  from '../graphql/mutations/user';
 
 
 class HomeScreen extends Component {
@@ -38,6 +38,10 @@ class HomeScreen extends Component {
     }
   };
 
+  _onLogout(){
+    this.props.mutate();
+  }
+
   newTweet(){
     this.props.navigation.navigate('NewTweet');
   }
@@ -46,7 +50,7 @@ class HomeScreen extends Component {
     console.log('the render props are: ', this.props)
     return (
       <View>
-        <Button title='hello' onPress={this._onSignupPress.bind(this)}>
+        <Button title='Logout' onPress={this._onLogout.bind(this)}>
         </Button>
         <Button title='New Tweet' onPress={this.newTweet.bind(this)}></Button>
         <Text> Home Screen </Text>
@@ -55,9 +59,4 @@ class HomeScreen extends Component {
   }
 }
 
-export default graphql(signup,{
-  props: (props) => {
-    console.log('The props ares: ', props);  
-    return props
-  }
-})(HomeScreen);
+export default graphql(LOGOUT)(HomeScreen);

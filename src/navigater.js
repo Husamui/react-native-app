@@ -9,20 +9,25 @@ import NotificationsScreen from './screens/notificationScreen';
 import ProfileScreen from './screens/profileScreen';
 import ExploreScreen from './screens/exploreScreen';
 import NewTweetScreen from './screens/newTweetScreen';
-
+import Loading from './components/Loading';
 
 
 
 // Auth Screens
+import authScreen from './screens/auth/authScreen';
 import signupScreen from './screens/auth/signupScreen';
+import signScreen from './screens/auth/signScreen';
 
 // GraphQL 
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import { AUTHENTICAT_QUERY } from './graphql/queries/user';
+import { AUTHENTICAT } from './graphql/mutations/user'
 
 
 import { colors } from './utils/constants';
+import { getToken } from './utils/auth';
+
 const TAB_ICON_SIZE = 20;
 
 
@@ -122,9 +127,20 @@ const RootNavigator = StackNavigator(
 
 
 const AuthNavigator = StackNavigator({
-    signup: {
-        screen: signupScreen
-    }
+
+    Auth: {
+        screen: authScreen,
+    },
+    Signup: {
+        screen: signupScreen,
+    },
+    Signin: {
+        screen: signScreen,
+    },
+},{
+  navigationOptions: () => ({
+    header: null,
+  }),
 });
 
 
@@ -136,7 +152,11 @@ class AppNavigation extends Component {
         return (
            <RootNavigator /> 
         );
+    
     }
 }
 
-export default graphql(AUTHENTICAT_QUERY)(AppNavigation);
+export default compose(
+  graphql(AUTHENTICAT_QUERY),
+  graphql(AUTHENTICAT)
+)(AppNavigation);

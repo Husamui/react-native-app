@@ -10,6 +10,7 @@ import ProfileScreen from './screens/profileScreen';
 import ExploreScreen from './screens/exploreScreen';
 import NewTweetScreen from './screens/newTweetScreen';
 import Loading from './components/Loading';
+import HeaderAvatar from './components/HeaderAvatar';
 
 
 
@@ -89,7 +90,7 @@ const NewTweetModal = StackNavigator(
     NewTweet: {
       screen: NewTweetScreen,
       navigationOptions: ({ navigation }) => ({
-        headerLeft: <Button title='Left' />,
+        headerLeft: <HeaderAvatar />,
         headerRight: <Button title='Right' />,
       }),
     },
@@ -104,7 +105,7 @@ const RootNavigator = StackNavigator(
     Home: {
       screen: RootTabs,
       navigationOptions: ({ navigation }) => ({
-        headerLeft: <Button title='Left' />,
+        headerLeft: <HeaderAvatar />,
         headerRight: <Button title='Right' />,
       }),
     },

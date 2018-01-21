@@ -1,7 +1,6 @@
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
 import styled from 'styled-components/native';
-
 import { colors } from '../utils/constants';
 
 const Root = styled.View`
